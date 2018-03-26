@@ -5,35 +5,41 @@ $error = ""; $successMessage = "";
 if($_POST){
     
     
-    
+//Email error    
     if (!$_POST["email"]){
         
         $error .="An email address is required.<br>";
         
     }
     
+//Subject error    
     if (!$_POST["subject"]){
         
         $error .="A subject is required.<br>";
         
     }
     
+//Message error    
     if (!$_POST["content"]){
         
         $error .="A message is required.<br>";
         
     }
+    
+//Bad email error    
     if ($_POST["email"] && filter_var($_POST["email"], FILTER_VALIDATE_EMAIL) === false) {
 
         $error .="The email address is invalid.<br>";
     }
     
+//Base error form    
     if ($error != ""){
         
         $error = '<div class="alert alert-danger" role="alert"><p>There were error(s) in your from:</p>'.$error.'</div>';
     
     } else {
         
+//Send message        
         $emailTo= "me@domain.com";
         
         $subject= $_POST ["subject"];
@@ -42,12 +48,14 @@ if($_POST){
         
         $headers= "From: ".$_POST["email"];
         
+ //Successfully sent       
         if (mail($emailTo, $subject, $content, $headers)){
             
             $successMessage = '<div class="alert alert-success" role="alert"><p>Your message was sent. We will get back to you ASAP!</p></div>';
         
         } else {
             
+ //Error sending           
             $error = '<div class="alert alert-danger" role="alert"><p>Your message could not be sent. Please try again later. <p></div>';
             
         }
@@ -78,30 +86,31 @@ if($_POST){
     <div class="container">
         
         <br><br>
-        
+<!--Title-->        
         <h1>Get in touch!</h1>
         <div id="error"><? echo $error.$successMessage; ?></div>
         <br>
         
         <form method="post">
+<!--Email-->            
           <div class="form-group">
             <label for="Email">Email Address</label>
             <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com">
           </div>
           
-            
+<!--Subject-->            
           <div class="form-group">
             <label for="Subject">Subject</label>
             <input type="text" class="form-control" id="subject" name="subject" placeholder="Subject">
           </div>
             
-            
+<!--Message-->            
           <div class="form-group">
             <label for="content">What would you like to ask us?</label>
             <textarea class="form-control" id="content" name="content" rows="3"></textarea>
           </div>
             
-            
+<!--submit-->            
           <button type="submit" id="submit" class="btn btn-primary">Submit</button>
         </form>
         
